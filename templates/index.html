@@ -1,0 +1,36 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zero-Agent Framework</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 40px auto; }
+        textarea { width: 100%; height: 100px; margin: 10px 0; }
+        button { padding: 10px 20px; background: blue; color: white; border: none; }
+    </style>
+</head>
+<body>
+    <h1>🤖 Zero-Agent Framework</h1>
+    
+    <form method="post" action="/run-task">
+        <label for="task">Entrez votre tâche :</label><br>
+        <textarea name="task" placeholder="Exemple: Find all text files in my test_files folder and organize them by extension" 
+          onfocus="if(this.value==''){this.value='Find all text files in my test_files folder';}"
+          onblur="if(this.value=='Find all text files in my test_files folder'){this.value='';}"></textarea>
+        <br>
+        <button type="submit">Exécuter la tâche</button>
+        
+    </form>
+</body>
+
+<footer style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #ccc;">
+    <p>Zero-Agent Framework v1.0</p>
+    <p>
+        <a href="/status">📊 Statut du système</a> | 
+        <a href="/">🏠 Accueil</a>
+    </p>
+</footer>
+
+</html>
+
+

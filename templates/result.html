@@ -1,0 +1,61 @@
+<!-- templates/result.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Résultat</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; }
+        .result { background: #f5f5f5; padding: 10px; margin: 5px 0; border-radius: 4px; }
+        .file-list { background: #e8f5e8; padding: 15px; margin: 10px 0; border-left: 4px solid #4CAF50; }
+        .file-item { font-family: 'Courier New', monospace; margin: 5px 0; }
+        .success { color: #4CAF50; font-weight: bold; }
+        .error { color: #f44336; }
+        .warning { color: #ff9800; }
+        pre { background: #2b2b2b; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>📋 Résultats pour la tâche :</h1>
+    <p><strong>{{ task }}</strong></p>
+    
+    <h2>📝 Plan généré :</h2>
+    {% if plan %}
+        <pre>{{ plan | tojson(indent=2) }}</pre>
+    {% else %}
+        <p class="error">❌ Aucun plan généré</p>
+    {% endif %}
+    
+    <h2>🚀 Execution :</h2>
+    {% for line in results %}
+        {% if line.strip() %}
+            {% if "Terminée avec succès" in line %}
+                <div class="result success">✅ {{ line }}</div>
+            {% elif "ERREUR" in line or "Error" in line %}
+                <div class="result error">❌ {{ line }}</div>
+            {% elif "Warning" in line or "Avertissement" in line %}
+                <div class="result warning">⚠️ {{ line }}</div>
+            {% else %}
+                <div class="result">{{ line }}</div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    
+    <!-- Nouvelle section : Liste des fichiers trouvés -->
+    <h2>📁 Fichiers Trouvés :</h2>
+    <div class="file-list">
+        {% for line in results %}
+            {% if "Étape 1:" in line %}
+                {% set files_list = line.split('Étape 1: ')[1].strip('[]').split(', ') %}
+                {% for file in files_list %}
+                    <div class="file-item">📄 {{ file }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </div>
+    
+    <br>
+    <a href="/" style="display: inline-block; padding: 10px 20px; background: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">
+        ← Soumettre une nouvelle tâche
+    </a>
+</body>
+</html>

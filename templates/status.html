@@ -1,0 +1,31 @@
+<!-- templates/status.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Statut du Système</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 40px auto; }
+        .status-card { background: #f8f9fa; padding: 20px; margin: 10px 0; border-radius: 8px; }
+        .metric { display: flex; justify-content: space-between; margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>📊 Statut du Système Zero-Agent</h1>
+    
+    <div class="status-card">
+        <h2>🖥️ Informations Système</h2>
+        {% for key, value in system_info.items() %}
+        <div class="metric">
+            <span><strong>{{ key }}:</strong></span>
+            <span>{{ value }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="status-card">
+        <h2>🔧 Actions Rapides</h2>
+        <p><a href="/">🏠 Page principale</a></p>
+        <p><a href="#" onclick="location.reload()">🔄 Actualiser cette page</a></p>
+    </div>
+</body>
+</html>
