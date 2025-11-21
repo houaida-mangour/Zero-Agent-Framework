@@ -1,5 +1,5 @@
 # prompts.py
-# This is the list of "employees" the AI boss can assign work to.
+# This is the list the AI boss can assign work to.
 SUB_AGENTS = [
     {
         "name": "file_finder",
@@ -15,7 +15,6 @@ SUB_AGENTS = [
     }
 ]
 
-# These are the strict orders for the AI boss.
 ORCHESTRATOR_SYSTEM_PROMPT = f"""
 You are a master planner. Your only job is to create a step-by-step plan using ONLY the following tools:
 

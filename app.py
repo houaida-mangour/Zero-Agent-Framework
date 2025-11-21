@@ -1,14 +1,11 @@
-# app.py
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 import os
 
-# Importe ton code existant
 from orchestrator import orchestrator_agent
 from engine import execute_plan
 
-# Initialise l'application
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
@@ -23,13 +20,11 @@ async def run_task(request: Request, task: str = Form(...)):
     Reçoit une tâche du formulaire web et l'exécute.
     C'est EXACTEMENT le même code que main.py mais pour le web.
     """
-    # Étape 1 : Planification (identique à avant)
     plan = orchestrator_agent(task)
     
     results = []
     if plan:
-        # Étape 2 : Exécution (identique à avant)
-        # On capture les prints pour les afficher sur la page web
+       
         import contextlib
         from io import StringIO
         
@@ -39,9 +34,8 @@ async def run_task(request: Request, task: str = Form(...)):
         
         results = output.getvalue().split('\n')
     else:
-        results = ["❌ Impossible de créer un plan."]
+        results = [" Impossible de créer un plan."]
     
-    # Affiche le résultat sur une nouvelle page
     return templates.TemplateResponse("result.html", {
         "request": request,
         "task": task,
@@ -49,14 +43,12 @@ async def run_task(request: Request, task: str = Form(...)):
         "results": results
     })
 
-# app.py (ajoute cette fonction)
 @app.get("/status")
 async def status_page(request: Request):
     """Page qui montre l'état du système"""
     import psutil
     import platform
     
-    # Informations système
     system_info = {
         "système": platform.system(),
         "processeur": platform.processor(),

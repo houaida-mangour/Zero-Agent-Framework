@@ -3,7 +3,6 @@ import sys
 sys.path.append('C:\\Users\\houai\\OneDrive\\Documents\\zero-agent-framework')
 from tools.agent_tools import parse_instruction_with_ai
 
-# Teste juste le parsing d'instruction
 FILE_FINDER_SCHEMA = {
     "type": "object",
     "properties": {

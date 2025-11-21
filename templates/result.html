@@ -1,4 +1,3 @@
-<!-- templates/result.html -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,18 +21,18 @@
     {% if plan %}
         <pre>{{ plan | tojson(indent=2) }}</pre>
     {% else %}
-        <p class="error">❌ Aucun plan généré</p>
+        <p class="error">Aucun plan généré</p>
     {% endif %}
     
-    <h2>🚀 Execution :</h2>
+    <h2>Execution :</h2>
     {% for line in results %}
         {% if line.strip() %}
             {% if "Terminée avec succès" in line %}
-                <div class="result success">✅ {{ line }}</div>
+                <div class="result success">{{ line }}</div>
             {% elif "ERREUR" in line or "Error" in line %}
-                <div class="result error">❌ {{ line }}</div>
+                <div class="result error">{{ line }}</div>
             {% elif "Warning" in line or "Avertissement" in line %}
-                <div class="result warning">⚠️ {{ line }}</div>
+                <div class="result warning">{{ line }}</div>
             {% else %}
                 <div class="result">{{ line }}</div>
             {% endif %}
@@ -41,7 +40,7 @@
     {% endfor %}
     
     <!-- Nouvelle section : Liste des fichiers trouvés -->
-    <h2>📁 Fichiers Trouvés :</h2>
+    <h2> Fichiers Trouvés :</h2>
     <div class="file-list">
         {% for line in results %}
             {% if "Étape 1:" in line %}

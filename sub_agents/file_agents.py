@@ -7,7 +7,6 @@ from typing import List, Dict, Any
 import json
 from tools.agent_tools import parse_instruction_with_ai
 
-# Schema pour le file_finder
 FILE_FINDER_SCHEMA = {
     "type": "object",
     "properties": {
@@ -30,7 +29,6 @@ def file_finder_intelligent(instruction: str, previous_result: List[str] = None)
     """
     print(f" [File Finder Intelligent] Instruction: '{instruction}'")
     
-    # Étape 1: Parser l'instruction avec l'IA
     parsed_args = parse_instruction_with_ai(instruction, FILE_FINDER_SCHEMA)
     
     if not parsed_args:
@@ -39,7 +37,6 @@ def file_finder_intelligent(instruction: str, previous_result: List[str] = None)
     
     print(f" [File Finder Intelligent] Paramètres parsés: {parsed_args}")
     
-    # Étape 2: Appeler la fonction originale avec les paramètres parsés
     return file_finder(
         directory=parsed_args.get("directory", "."),
         extensions=parsed_args.get("extensions", [])
@@ -51,20 +48,17 @@ def file_finder(directory: str, extensions: List[str] = None) -> List[str]:
     """
     print(f" [File Finder] Searching in: '{directory}' for extensions: {extensions}")
     
-    # Construction du pattern de recherche
     pattern = os.path.join(directory, "**", "*.*")
     
     found_files = []
     for file_path in glob.glob(pattern, recursive=True):
         if os.path.isfile(file_path):
-            # Si extensions est spécifié, filtrer par extension
             if not extensions or any(file_path.lower().endswith(ext.lower()) for ext in extensions):
                 found_files.append(os.path.abspath(file_path))
     
     print(f" [File Finder] Found {len(found_files)} files.")
     return found_files
 
-# Schema pour le file_sorter
 FILE_SORTER_SCHEMA = {
     "type": "object",
     "properties": {
@@ -82,7 +76,6 @@ def file_sorter_intelligent(instruction: str, previous_result: List[str] = None)
     """
     print(f" [File Sorter Intelligent] Instruction: '{instruction}'")
     
-    # Parser l'instruction
     parsed_args = parse_instruction_with_ai(instruction, FILE_SORTER_SCHEMA)
     
     if not parsed_args:
@@ -91,12 +84,10 @@ def file_sorter_intelligent(instruction: str, previous_result: List[str] = None)
     
     print(f" [File Sorter Intelligent] Paramètres parsés: {parsed_args}")
     
-    # Vérifier qu'on a des fichiers à trier
     if not previous_result:
         print(" Aucun fichier à trier. Veuillez d'abord exécuter file_finder.")
         return {"moved": [], "errors": ["No input files"]}
     
-    # Appeler la fonction originale
     return file_sorter(
         files=previous_result,
         strategy=parsed_args.get("strategy", "by_extension")
@@ -117,12 +108,10 @@ def file_sorter(files: List[str], strategy: str) -> dict:
                 continue
             
             if strategy == "by_extension":
-                # Tri par extension
                 _, extension = os.path.splitext(file_path)
                 extension_folder = extension[1:] if extension else "no_extension"
                 target_dir = os.path.join(os.path.dirname(file_path), extension_folder)
                 
-            # Vous pouvez ajouter d'autres stratégies ici (by_date, by_size, etc.)
             else:
                 print(f" Stratégie '{strategy}' non supportée. Utilisation 'by_extension'.")
                 _, extension = os.path.splitext(file_path)
@@ -169,15 +158,13 @@ def duplicate_remover(instruction: str, previous_result: List[str] = None) -> Di
         except Exception as e:
             print(f" Impossible de lire le fichier {file_path}: {e}")
     
-    # Trouver les doublons (fichiers avec le même hash)
     duplicates = {hash: file_list for hash, file_list in hash_map.items() if len(file_list) > 1}
     
     print(f" [Duplicate Remover] {len(duplicates)} groupe(s) de doublons trouvé(s).")
     
-    # Fichiers qui seraient supprimés (tous sauf le premier de chaque groupe)
     files_to_delete = []
     for file_list in duplicates.values():
-        files_to_delete.extend(file_list[1:])  # Garder le premier, "supprimer" les autres
+        files_to_delete.extend(file_list[1:])  
     
     return {
         "duplicates_found": len(duplicates),
